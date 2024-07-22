@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('main_title')->nullable();
             $table->text('sub_title')->nullable();
+            $table->string('type')->default('public');
             $table->timestamps();
         });
     }

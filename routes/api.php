@@ -21,6 +21,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GeneralServiceController;
 use App\Http\Controllers\SectionsControllerResource;
 use App\Http\Controllers\SectionsAttributesControllerResource;
+use App\Http\Controllers\ServiceControllerResource;
+use App\Http\Controllers\ServiceSectionsAttributesControllerResource;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -77,7 +79,9 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::resources([
         'sections'=>SectionsControllerResource::class,
         'attributes'=>AttributesControllerResource::class,
-        'sections-attributes'=>SectionsAttributesControllerResource::class
+        'sections-attributes'=>SectionsAttributesControllerResource::class,
+        'services'=>ServiceControllerResource::class,
+        'services-sec-attrs'=>ServiceSectionsAttributesControllerResource::class
     ]);
 
     Route::post('/deleteitem',[GeneralServiceController::class,'delete_item']);

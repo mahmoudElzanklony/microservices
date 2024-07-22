@@ -18,7 +18,10 @@ return new class extends Migration
             $table->foreign('service_section_data_id','fk_s_d')->references('id')
                 ->on('clients_services_sections_private_datas')
                 ->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('section_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('attribute_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->text('answer');
+            $table->string('answer_type')->default('text');
             $table->timestamps();
         });
     }

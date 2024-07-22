@@ -18,21 +18,20 @@ class ServiceResource extends JsonResource
     {
         $init = [
             'id'=>$this->id,
-            'image'=>ImageResource::make($this->image),
-            'category'=>CategoryResource::make($this->whenLoaded('category')),
-            'price'=>$this->price,
+            'user_id'=>$this->user_id,
+            'name'=>$this->name,
             'created_at'=>$this->created_at->format('Y-m-d H:i:s'),
         ];
         if(request()->hasHeader('AllLangs')){
             $langs = languages::query()->select('prefix')->get();
             // data
-            $name = FormRequestHandleInputs::handle_output_column_for_all_lang('name',$this->name,$langs);
-            $info = FormRequestHandleInputs::handle_output_column_for_all_lang('info',$this->info,$langs);
-            return array_merge($init,$name,$info);
+            $main_title = FormRequestHandleInputs::handle_output_column_for_all_lang('main_title',$this->main_title,$langs);
+            $sub_title = FormRequestHandleInputs::handle_output_column_for_all_lang('sub_title',$this->sub_title,$langs);
+            return array_merge($init,$main_title,$sub_title);
         }else{
             $data = [
-                'name'=>FormRequestHandleInputs::handle_output_column($this->name),
-                'info'=>FormRequestHandleInputs::handle_output_column($this->info) ?? [],
+                'main_title'=>FormRequestHandleInputs::handle_output_column($this->main_title),
+                'sub_title'=>FormRequestHandleInputs::handle_output_column($this->sub_title) ?? [],
             ];
             return array_merge($init,$data);
         }

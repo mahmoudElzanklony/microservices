@@ -17,7 +17,7 @@ return new class extends Migration
                 ->constrained('services')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('section_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('attribute_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->text('answer');
+            $table->string('type')->default('public');
             $table->timestamps();
         });
     }

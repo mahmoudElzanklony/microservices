@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Services\FormRequestHandleInputs;
 use Illuminate\Foundation\Http\FormRequest;
 
-class sectionFormRequest extends FormRequest
+class serviceSecAttrFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,14 +21,12 @@ class sectionFormRequest extends FormRequest
      */
     public function rules(): array
     {
-        $arr = [
+        return [
             'id'=>'filled',
+            'service_id'=>'required|exists:services,id',
+            'section_id'=>'required|exists:sections,id',
+            'attribute_id'=>'required|exists:attributes,id',
             'type'=>'filled',
-            'user_id'=>'filled|exists:users,id',
-            'visibility'=>'required',
         ];
-        $arr = FormRequestHandleInputs::handle($arr,['name']);
-        return $arr;
-
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Services\FormRequestHandleInputs;
 use Illuminate\Foundation\Http\FormRequest;
 
-class sectionFormRequest extends FormRequest
+class serviceFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,9 @@ class sectionFormRequest extends FormRequest
     {
         $arr = [
             'id'=>'filled',
-            'type'=>'filled',
-            'user_id'=>'filled|exists:users,id',
-            'visibility'=>'required',
+            'name'=>'required',
         ];
-        $arr = FormRequestHandleInputs::handle($arr,['name']);
+        $arr = FormRequestHandleInputs::handle($arr,['main_title','sub_title']);
         return $arr;
-
     }
 }
