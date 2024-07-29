@@ -19,14 +19,17 @@ class ServiceControllerResource extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->except('index','show');
+        $this->middleware('auth:sanctum')
+            ->except('show');
     }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data = services::query()->orderBy('id','DESC');
+        $data = services::query()
+            ->when(auth()->user()->roleName() == 'client',fn($e) => $e->where('user_id',auth()->id()))
+            ->orderBy('id','DESC');
         $output  = app(Pipeline::class)
             ->send($data)
             ->through([

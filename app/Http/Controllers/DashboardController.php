@@ -39,7 +39,6 @@ class DashboardController extends Controller
             ->through([
                 StartDateFilter::class,
                 EndDateFilter::class,
-                WalletFilter::class,
                 UserNameFilter::class
             ])
             ->thenReturn()

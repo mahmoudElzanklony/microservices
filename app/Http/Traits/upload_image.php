@@ -37,4 +37,10 @@ trait upload_image
     }
 
 
+    public function uploadGeneralFile($file){
+        $name = time().rand(0,9999999999999). '_file.' . $file->getClientOriginalExtension();
+        $file->move(public_path('clients_answers/'), $name);
+        return $name;
+    }
+
 }

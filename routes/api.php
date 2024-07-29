@@ -23,6 +23,7 @@ use App\Http\Controllers\SectionsControllerResource;
 use App\Http\Controllers\SectionsAttributesControllerResource;
 use App\Http\Controllers\ServiceControllerResource;
 use App\Http\Controllers\ServiceSectionsAttributesControllerResource;
+use App\Http\Controllers\ClientsServicesAnswersController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -59,6 +60,13 @@ Route::group(['middleware'=>'changeLang'],function (){
         Route::get('/',[NotificationsController::class,'index']);
         Route::post('/read-at',[NotificationsController::class,'seen']);
     });
+
+    // clients answers
+    Route::group(['prefix'=>'/services-clients','middleware'=>'auth:sanctum'],function (){
+        Route::get('/',[ClientsServicesAnswersController::class,'index'])->middleware('auth:sanctum');
+        Route::post('/save-answers',[ClientsServicesAnswersController::class,'save_answers']);
+    });
+
     // profile
     Route::group(['prefix'=>'/profile','middleware'=>'auth:sanctum'],function (){
         Route::post('/update-info',[ProfileController::class,'update_info']);
@@ -68,7 +76,6 @@ Route::group(['middleware'=>'changeLang'],function (){
         Route::get('/users',[DashboardController::class,'users']);
         Route::get('/orders-statistics',[DashboardController::class,'orders']);
         Route::get('/orders-summary',[DashboardController::class,'orders_summary']);
-        Route::post('/add-money-to-wallet',[DashboardController::class,'add_money_to_wallet']);
         Route::post('/update-tax',[DashboardController::class,'update_tax']);
         Route::get('/get-tax',[DashboardController::class,'get_tax']);
         Route::group(['prefix'=>'/notifications-schedule','middleware'=>'auth:sanctum'],function (){
@@ -81,7 +88,8 @@ Route::group(['middleware'=>'changeLang'],function (){
         'attributes'=>AttributesControllerResource::class,
         'sections-attributes'=>SectionsAttributesControllerResource::class,
         'services'=>ServiceControllerResource::class,
-        'services-sec-attrs'=>ServiceSectionsAttributesControllerResource::class
+        'services-sec-attrs'=>ServiceSectionsAttributesControllerResource::class,
+
     ]);
 
     Route::post('/deleteitem',[GeneralServiceController::class,'delete_item']);
