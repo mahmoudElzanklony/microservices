@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Filters\EndDateFilter;
 use App\Filters\NameFilter;
+use App\Filters\sections\NoOwnerShipFilter;
 use App\Filters\sections\SectionIdFilter;
 use App\Filters\StartDateFilter;
+use App\Filters\TypeFilter;
 use App\Filters\users\UserNameFilter;
 use App\Filters\users\WalletFilter;
+use App\Filters\VisibilityFilter;
 use App\Http\Requests\attributeFormRequest;
 use App\Http\Resources\AttributeResource;
 use App\Http\Resources\SectionResource;
+use App\Models\attribute_options;
 use App\Models\attributes;
 use App\Models\sections;
 use App\Services\FormRequestHandleInputs;
@@ -25,16 +29,19 @@ class AttributesControllerResource extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->except('index','show');
+        $this->middleware('auth:sanctum')->except('show');
     }
     public function index()
     {
-        $data = attributes::query();
+        $data = attributes::query()->with('options')->orderBy('id','DESC');
         $output  = app(Pipeline::class)
             ->send($data)
             ->through([
                 NameFilter::class,
-                SectionIdFilter::class
+                NoOwnerShipFilter::class,
+                SectionIdFilter::class,
+                VisibilityFilter::class,
+                TypeFilter::class
             ])
             ->thenReturn()
             ->paginate(request('limit') ?? 10);
@@ -59,7 +66,17 @@ class AttributesControllerResource extends Controller
         $output = attributes::query()->updateOrCreate([
             'id'=>$data['id'] ?? null
         ],$data);
-        return Messages::success(__(trans('messages.saved_successfully')),AttributeResource::make($output));
+        if(isset($data['option'])){
+            attribute_options::query()->where('attribute_id','=',$output->id)->delete();
+            foreach($data['option']['ar'] as $key => $option){
+                attribute_options::query()->create([
+                    'attribute_id'=>$output->id,
+                    'name'=>json_encode(['ar'=>$option,'en'=>$data['option']['en'][$key]],JSON_UNESCAPED_UNICODE)
+                ]);
+            }
+        }
+
+        return Messages::success(__(trans('messages.saved_successfully')),$data);
     }
 
     /**

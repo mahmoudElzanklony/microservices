@@ -21,7 +21,7 @@ class UserResource extends JsonResource
             'phone_verified_at'=>$this->phone_verified_at,
             'phone'=>$this->phone,
             'otp'=>$this->otp_secret,
-            'wallet'=>$this->wallet,
+            'image'=>ImageResource::make($this->whenLoaded('image')),
             'role'=>$this->roles->pluck('name')[0],
             'created_at'=>$this->created_at->format('Y-m-d H:i:s')
         ];

@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\EndDateFilter;
 use App\Filters\NameFilter;
 use App\Filters\sections\SectionIdFilter;
+use App\Filters\services\MainTitleFilter;
+use App\Filters\services\SubTitleFilter;
+use App\Filters\StartDateFilter;
 use App\Http\Requests\serviceFormRequest;
 use App\Http\Resources\AttributeResource;
 use App\Http\Resources\ServiceResource;
@@ -34,6 +38,10 @@ class ServiceControllerResource extends Controller
             ->send($data)
             ->through([
                 NameFilter::class,
+                MainTitleFilter::class,
+                SubTitleFilter::class,
+                StartDateFilter::class,
+                EndDateFilter::class
             ])
             ->thenReturn()
             ->paginate(request('limit') ?? 10);
@@ -71,6 +79,11 @@ class ServiceControllerResource extends Controller
         //
         $data = services::query()
             ->where('id','=',$id)->FailIfNotFound('not found');
+        if(request()->filled('check_owner') && request()->filled('user_id')){
+            if($data->user_id != request('user_id')){
+                return Messages::error('cant access this services','401');
+            }
+        }
         return ServiceResource::make($data);
     }
 

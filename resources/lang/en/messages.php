@@ -7,6 +7,7 @@ return [
     'deleted_successfully'=>'Delete process done successfully',
     'login_successfully'=>'Login successfully',
     'operation_done_successfully'=>'Operation done successfully',
-  'logout_successfully'=>'تم تسجيل الخروج بنجاح'
+  'logout_successfully'=>'تم تسجيل الخروج بنجاح',
+  'submit_new_request'=>'New data has been saved successfully at service called ',
 
 ];

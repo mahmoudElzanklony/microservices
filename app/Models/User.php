@@ -62,18 +62,9 @@ class User extends Authenticatable
         return Attribute::make(set: fn() => rand(1000, 9999));
     }
 
-
-
-
-
-    public function orders()
+    public function image()
     {
-        return $this->hasMany(orders::class,'user_id');
-    }
-
-    public function orders_items()
-    {
-        return $this->hasManyThrough(orders_items::class,orders::class,'user_id','order_id');
+        return $this->morphOne(images::class,'imageable');
     }
 
 

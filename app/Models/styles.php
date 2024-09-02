@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class styles extends Model
 {
     use HasFactory;
+    protected $fillable = ['styleable_id','styleable_type','name'];
+
+    public function styleable()
+    {
+        return $this->morphTo();
+    }
+
 }

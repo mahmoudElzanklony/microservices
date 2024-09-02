@@ -2,27 +2,49 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\EndDateFilter;
+use App\Filters\NameFilter;
+use App\Filters\sections\NoOwnerShipFilter;
+use App\Filters\StartDateFilter;
+use App\Filters\VisibilityFilter;
 use App\Http\Requests\sectionFormRequest;
 use App\Http\Resources\SectionResource;
 use App\Models\sections;
 use App\Services\FormRequestHandleInputs;
 use App\Services\Messages;
 use Illuminate\Http\Request;
+use Illuminate\Pipeline\Pipeline;
+
 
 class SectionsControllerResource extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->except(['index', 'show']);
+        $this->middleware('auth:sanctum')->except('index','show');
     }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+
         //
-        $data = sections::query()->orderBy('id', 'desc')->get();
-        return  SectionResource::collection($data);
+        $data = sections::query()
+
+            ->with('attributes.options')->orderBy('id', 'desc');
+
+        $output  = app(Pipeline::class)
+            ->send($data)
+            ->through([
+                NameFilter::class,
+                VisibilityFilter::class,
+                NoOwnerShipFilter::class,
+                StartDateFilter::class,
+                EndDateFilter::class,
+            ])
+            ->thenReturn()
+            ->paginate(request('limit') ?? 10);
+        return  SectionResource::collection($output);
     }
 
     /**
@@ -54,6 +76,10 @@ class SectionsControllerResource extends Controller
         $output = sections::query()->updateOrCreate([
             'id'=>$data['id'] ?? null
         ],$data);
+        if(isset($data['attributes'])){
+            $output->attributes()->sync($data['attributes']);
+        }
+        $output->load('attributes');
         return Messages::success(__(trans('messages.saved_successfully')),SectionResource::make($output));
     }
     public function update(SectionFormRequest $request , string $id)

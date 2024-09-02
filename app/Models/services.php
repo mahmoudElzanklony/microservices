@@ -18,7 +18,14 @@ class services extends Model
 
     public function sec_attr_data()
     {
-        return $this->belongsToMany(attributes::class,services_sections_data::class,
-            'service_id','attribute_id');
+        /*return $this->belongsToMany(attributes::class,services_sections_data::class,
+            'service_id','attribute_id');*/
+        return $this->hasMany(services_sections_data::class,'service_id');
     }
+
+    public function style()
+    {
+        return $this->morphOne(styles::class,'styleable');
+    }
+
 }

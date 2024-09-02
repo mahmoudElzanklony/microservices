@@ -16,6 +16,7 @@ class LoginController extends Controller
         $data = ['email'=>request('email'),'password'=>request('password')];
         if(auth()->attempt($data)){
             $user = User::query()->where('email',$data['email'])->first();
+            $user->load('image');
             $user['token'] = $user->createToken($data['email'])->plainTextToken;
             return Messages::success(__('messages.login_successfully'),UserResource::make($user));
         }else{

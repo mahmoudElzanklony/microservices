@@ -15,4 +15,9 @@ class sections extends Model
     protected $casts = [
       'visibility' => SectionVisibilityEnum::class,
     ];
+
+    public function attributes()
+    {
+        return $this->belongsToMany(attributes::class,attributes_sections::class,'section_id','attribute_id');
+    }
 }

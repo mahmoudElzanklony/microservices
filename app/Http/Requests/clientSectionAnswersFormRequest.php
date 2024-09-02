@@ -26,6 +26,7 @@ class clientSectionAnswersFormRequest extends FormRequest
             'service_id'=>'required|exists:services,id',
             'latitude'=>'required',
             'longitude'=>'required',
+            'url'=>'filled',
             'info'=>'filled',
             'ids'=>'filled|array',
             'ids.*'=>'filled',
@@ -34,7 +35,9 @@ class clientSectionAnswersFormRequest extends FormRequest
             'attribute_id'=>'required|array',
             'attribute_id.*'=>'required|exists:attributes,id',
             'answer'=>'required|array',
-            'answer.*'=>'required',
+            'answer.*'=>'nullable',
+            'files'=>'nullable|array',
+            'files.*'=>'nullable',
         ];
     }
 }

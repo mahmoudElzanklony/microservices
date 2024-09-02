@@ -19,6 +19,7 @@ class SectionResource extends JsonResource
         $init = [
             'id'=>$this->id,
             'visibility'=>$this->visibility,
+            'attributes'=>AttributeResource::collection($this->whenLoaded('attributes')),
             'created_at'=>$this->created_at->format('Y-m-d H:i:s'),
         ];
         if(request()->hasHeader('AllLangs')){
@@ -26,11 +27,27 @@ class SectionResource extends JsonResource
             // data
             $name = FormRequestHandleInputs::handle_output_column_for_all_lang('name',$this->name,$langs);
             return array_merge($init,$name);
+        }else if(request()->hasHeader('mix')){
+            $output  = $this->get_data_with_all_lang();
+            $data = [
+                'name'=>FormRequestHandleInputs::handle_output_column($this->name),
+            ];
+            return array_merge($init,$output['name'],$data);
         }else{
             $data = [
                 'name'=>FormRequestHandleInputs::handle_output_column($this->name),
             ];
             return array_merge($init,$data);
         }
+    }
+
+    public function get_data_with_all_lang()
+    {
+        $langs = languages::query()->select('prefix')->get();
+        // data
+        $name = FormRequestHandleInputs::handle_output_column_for_all_lang('name',$this->name,$langs);
+        return [
+            'name'=>$name,
+        ];
     }
 }

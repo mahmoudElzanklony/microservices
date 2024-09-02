@@ -24,6 +24,7 @@ class ClientServicePrivateDataResource extends JsonResource
           'info'=>$this->info,
           'answers'=>ClientServiceAnswersDataResource::collection($this->whenLoaded('answers')),
           'created_at'=>$this->created_at->format('Y-m-d H:i:s'),
+          'published_at'=>$this->created_at->diffForHumans(),
         ];
     }
 }

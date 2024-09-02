@@ -2,6 +2,7 @@
 
 namespace App\Http\patterns\builder;
 
+use App\Models\attributes;
 use App\Models\clients_services_sections_data;
 use App\Models\clients_services_sections_private_data;
 use App\Http\Traits\upload_image;
@@ -30,16 +31,26 @@ class ClientServiceAnswerBuilder
     {
         foreach ($this->data['section_id'] as $key => $value) {
             // Check if the answer is a file
-            $answer = $this->data['answer'][$key];
+            $file_num = 0;
+            if(array_key_exists($key,$this->data['answer'])){
+                $answer = $this->data['answer'][$key];
+            }else{
+                $answer = $this->data['files'][$file_num] ?? '';
+            }
+
             $type = 'text';
+
             if ($answer instanceof \Illuminate\Http\UploadedFile) {
                 // Handle the file upload
-                $answer = $this->uploadGeneralFile($answer);
+                try{
+                    $answer = $this->uploadGeneralFile($answer);
+                }catch (\Exception $e){
+                    $answer = null;
+                }
+                $file_num++;
                 $type = 'file';
             }
-            clients_services_sections_data::query()->updateOrCreate([
-                'id'=>$this->data['ids'][$key] ?? null
-            ],[
+            clients_services_sections_data::query()->create([
                 'section_id'=>$value,
                 'attribute_id'=>$this->data['attribute_id'][$key],
                 'service_section_data_id'=>$this->privateDataObj->id,

@@ -7,5 +7,6 @@ return [
   'deleted_successfully'=>'تمت عملية المسح بنجاح',
   'login_successfully'=>'تم التسجيل بنجاح',
   'operation_done_successfully'=>'تمت العملية بنجاح',
-  'logout_successfully'=>'تم تسجيل الخروج بنجاح'
+  'logout_successfully'=>'تم تسجيل الخروج بنجاح',
+  'submit_new_request'=>'تم حفظ بيانات جديده في خدمة ',
 ];

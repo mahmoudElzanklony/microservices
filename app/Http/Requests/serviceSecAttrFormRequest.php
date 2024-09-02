@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Services\FormRequestHandleInputs;
 use Illuminate\Foundation\Http\FormRequest;
 
 class serviceSecAttrFormRequest extends FormRequest
@@ -21,12 +22,21 @@ class serviceSecAttrFormRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $arr = [
             'id'=>'filled',
             'service_id'=>'required|exists:services,id',
-            'section_id'=>'required|exists:sections,id',
-            'attribute_id'=>'required|exists:attributes,id',
-            'type'=>'filled',
+            'item_id'=>'filled|array',
+            'item_id.*'=>'filled|exists:services_sections_datas,id',
+            'section_id'=>'required|array',
+            'section_id.*'=>'required|exists:sections,id',
+            'attribute_id'=>'required|array',
+            'attribute_id.*'=>'required|exists:attributes,id',
+            'type'=>'required|array',
+            'type.*'=>'required',
+            'style'=>'filled',
         ];
+        $arr = FormRequestHandleInputs::handle($arr,['main_title','sub_title']);
+        return $arr;
+
     }
 }

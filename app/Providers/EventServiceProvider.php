@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\clients_services_sections_private_data;
 use App\Models\User;
+use App\Observers\ClientPrivateDataObserver;
 use App\Observers\UserObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -29,7 +31,7 @@ class EventServiceProvider extends ServiceProvider
     {
         //
         User::observe(UserObserver::class);
-
+        clients_services_sections_private_data::observe(ClientPrivateDataObserver::class);
     }
 
     /**

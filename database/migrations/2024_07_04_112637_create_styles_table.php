@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('styles', function (Blueprint $table) {
             $table->id();
+            $table->string('styleable_id');
+            $table->string('styleable_type');
+            $table->text('style');
             $table->timestamps();
         });
     }

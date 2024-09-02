@@ -15,4 +15,11 @@ class attributes extends Model
     protected $casts = [
       'visibility'=>SectionVisibilityEnum::class
     ];
+
+    public function options()
+    {
+        return $this->hasMany(attribute_options::class,'attribute_id');
+    }
+
+
 }

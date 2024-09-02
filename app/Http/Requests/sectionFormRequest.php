@@ -27,6 +27,8 @@ class sectionFormRequest extends FormRequest
             'type'=>'filled',
             'user_id'=>'filled|exists:users,id',
             'visibility'=>'required',
+            'attributes'=>'filled|array',
+            'attributes.*'=>'filled',
         ];
         $arr = FormRequestHandleInputs::handle($arr,['name']);
         return $arr;

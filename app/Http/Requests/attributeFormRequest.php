@@ -28,9 +28,13 @@ class attributeFormRequest extends FormRequest
             'user_id'=>'filled|exists:users,id',
             'visibility'=>'required',
             'type'=>'required',
-            'icon'=>'required',
+            'icon'=>'nullable',
+            'ar_option'=>'array|filled',
+            'ar_option.*'=>'filled',
+            'en_option'=>'array|filled',
+            'en_option.*'=>'filled',
         ];
-        $arr = FormRequestHandleInputs::handle($arr,['label','placeholder']);
+        $arr = FormRequestHandleInputs::handle($arr,['label:nullable','placeholder:nullable']);
         return $arr;
     }
 }

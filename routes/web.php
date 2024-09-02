@@ -26,3 +26,12 @@ Route::group(['prefix'=>'/employees'],function (){
    Route::post('/create', CreateController::class);
 });
 
+Route::get('/test-websocket', function () {
+    // Trigger an event for testing
+    \Illuminate\Support\Facades\Broadcast::channel('messages', function () {
+        return true;
+    });
+    event(new \App\Events\MyWebSocketEvent('Hello from WebSocket!'));
+    return 'WebSocket event sent!';
+});
+
