@@ -20,6 +20,7 @@ class ServiceResource extends JsonResource
             'id'=>$this->id,
             'user_id'=>$this->user_id,
             'name'=>$this->name,
+            'user'=>UserResource::make($this->whenLoaded('user')),
             'sec_attr_data'=>SectionAttributeResource::collection($this->whenLoaded('sec_attr_data')),
             'style'=>StyleResource::make($this->whenLoaded('style')),
             'created_at'=>$this->created_at->format('Y-m-d H:i:s'),

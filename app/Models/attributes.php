@@ -21,5 +21,10 @@ class attributes extends Model
         return $this->hasMany(attribute_options::class,'attribute_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
+
 
 }

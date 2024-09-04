@@ -16,6 +16,11 @@ class sections extends Model
       'visibility' => SectionVisibilityEnum::class,
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
+
     public function attributes()
     {
         return $this->belongsToMany(attributes::class,attributes_sections::class,'section_id','attribute_id');

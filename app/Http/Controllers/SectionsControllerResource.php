@@ -6,6 +6,7 @@ use App\Filters\EndDateFilter;
 use App\Filters\NameFilter;
 use App\Filters\sections\NoOwnerShipFilter;
 use App\Filters\StartDateFilter;
+use App\Filters\UserIdFilter;
 use App\Filters\VisibilityFilter;
 use App\Http\Requests\sectionFormRequest;
 use App\Http\Resources\SectionResource;
@@ -30,6 +31,7 @@ class SectionsControllerResource extends Controller
 
         //
         $data = sections::query()
+            ->when(auth()->check() && auth()->user()->roleName() == 'admin',fn($e) => $e->with('user'))
 
             ->with('attributes.options')->orderBy('id', 'desc');
 
@@ -37,6 +39,7 @@ class SectionsControllerResource extends Controller
             ->send($data)
             ->through([
                 NameFilter::class,
+                UserIdFilter::class,
                 VisibilityFilter::class,
                 NoOwnerShipFilter::class,
                 StartDateFilter::class,

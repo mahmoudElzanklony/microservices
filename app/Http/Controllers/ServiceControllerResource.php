@@ -8,6 +8,7 @@ use App\Filters\sections\SectionIdFilter;
 use App\Filters\services\MainTitleFilter;
 use App\Filters\services\SubTitleFilter;
 use App\Filters\StartDateFilter;
+use App\Filters\UserIdFilter;
 use App\Http\Requests\serviceFormRequest;
 use App\Http\Resources\AttributeResource;
 use App\Http\Resources\ServiceResource;
@@ -33,10 +34,12 @@ class ServiceControllerResource extends Controller
     {
         $data = services::query()
             ->when(auth()->user()->roleName() == 'client',fn($e) => $e->where('user_id',auth()->id()))
+            ->when(auth()->user()->roleName() == 'admin',fn($e) => $e->with('user'))
             ->orderBy('id','DESC');
         $output  = app(Pipeline::class)
             ->send($data)
             ->through([
+                UserIdFilter::class,
                 NameFilter::class,
                 MainTitleFilter::class,
                 SubTitleFilter::class,

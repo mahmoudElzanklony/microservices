@@ -8,6 +8,7 @@ use App\Filters\sections\NoOwnerShipFilter;
 use App\Filters\sections\SectionIdFilter;
 use App\Filters\StartDateFilter;
 use App\Filters\TypeFilter;
+use App\Filters\UserIdFilter;
 use App\Filters\users\UserNameFilter;
 use App\Filters\users\WalletFilter;
 use App\Filters\VisibilityFilter;
@@ -33,10 +34,13 @@ class AttributesControllerResource extends Controller
     }
     public function index()
     {
-        $data = attributes::query()->with('options')->orderBy('id','DESC');
+        $data = attributes::query()->with('options')
+            ->when(auth()->check() && auth()->user()->roleName() == 'admin',fn($e) => $e->with('user'))
+            ->orderBy('id','DESC');
         $output  = app(Pipeline::class)
             ->send($data)
             ->through([
+                UserIdFilter::class,
                 NameFilter::class,
                 NoOwnerShipFilter::class,
                 SectionIdFilter::class,
