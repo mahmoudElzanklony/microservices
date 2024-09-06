@@ -12,6 +12,7 @@ class attributes extends Model
 
     protected $fillable = ['user_id','name','label','placeholder','type','icon','visibility'];
 
+
     protected $casts = [
       'visibility'=>SectionVisibilityEnum::class
     ];

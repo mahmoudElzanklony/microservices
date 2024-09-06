@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: microservices
+        volumes:
+            - .:/var/www/microservices
+        ports:
+            - "8080:80"
+        depends_on:
+            - db
+
+    db:
+        image: mysql:8.0
+        container_name: laravel_db
+        environment:
+            MYSQL_ROOT_PASSWORD: _2022_
+            MYSQL_DATABASE: microservices
+            MYSQL_USER: root
+            MYSQL_PASSWORD: _2022_
+        volumes:
+            - dbdata:/var/lib/mysql
+        ports:
+            - "3306:3306"
+
+volumes:
+    dbdata:

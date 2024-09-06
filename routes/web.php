@@ -4,7 +4,6 @@ use App\Http\Controllers\Employees\CreateController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Employees\IndexController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,9 +15,7 @@ use App\Http\Controllers\Employees\IndexController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class,'index']);
 
 
 Route::group(['prefix'=>'/employees'],function (){

@@ -40,7 +40,8 @@ class ServiceSectionsAttributesControllerResource extends Controller
             'main_title'=>$data['main_title'],
             'sub_title'=>$data['sub_title'],
         ]);
-
+        $data['section_id'] = collect($data['section_id'])->unique()->values()->all();
+        $data['attribute_id'] = collect($data['attribute_id'])->unique()->values()->all();
         foreach($data['section_id'] as $key => $sec_id){
             services_sections_data::query()->updateOrCreate([
                 'id'=>$data['item_id'][$key] ?? null
