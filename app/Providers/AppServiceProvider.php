@@ -23,9 +23,9 @@ class AppServiceProvider extends ServiceProvider
         // binding messages interface
         $this->app->bind(MessagesInterface::class,function ($app){
             return match(request('sending_type')) {
-                'email' => new EmailMessages(),
-                'sms' => new SMSMessages(),
-                default => new NotificationsMessages()
+               /* 'email' => new EmailMessages(),
+                'sms' => new SMSMessages(),*/
+                default => new EmailMessages()
             };
         });
         // binding payment interface

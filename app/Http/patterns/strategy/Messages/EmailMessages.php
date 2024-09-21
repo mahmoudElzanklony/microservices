@@ -11,6 +11,6 @@ class EmailMessages implements MessagesInterface
     {
 
         $user = $data['user'];
-        SendEmail::send($data['title'],$data['message'],'','',$user->email);
+        SendEmail::send($data['title'],$data['message'],$data['link'] ?? '','',$user->email);
     }
 }

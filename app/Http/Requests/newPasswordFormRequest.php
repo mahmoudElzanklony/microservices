@@ -25,6 +25,7 @@ class newPasswordFormRequest extends FormRequest
             //
             'phone'=>'filled',
             'email'=>'filled',
+            'otp'=>'required',
             'password'=>'required|confirmed|min:6'
         ];
     }

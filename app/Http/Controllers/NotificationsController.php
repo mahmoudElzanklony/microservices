@@ -17,6 +17,7 @@ class NotificationsController extends Controller
 
             return NotificationResource::collection(auth()->user()->$method()->paginate(request('limit') ?? 10));
         }
+        auth()->user()->unreadNotifications->markAsRead();
         return NotificationResource::collection(auth()->user()->Notifications()->paginate(request('limit') ?? 10));
     }
 

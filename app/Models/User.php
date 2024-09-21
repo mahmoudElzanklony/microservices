@@ -33,7 +33,7 @@ class User extends Authenticatable
     {
         parent::__construct($attributes);
 
-        $this->attributes['otp_secret'] = rand(1000, 9999);
+        $this->attributes['otp_secret'] = time();
     }
 
     protected $fillable = [
@@ -59,7 +59,7 @@ class User extends Authenticatable
 
     public function otp_secret() : Attribute
     {
-        return Attribute::make(set: fn() => rand(1000, 9999));
+        return Attribute::make(set: fn() => time());
     }
 
     public function image()

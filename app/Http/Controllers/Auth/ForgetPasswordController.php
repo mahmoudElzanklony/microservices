@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\patterns\strategy\Messages\MessagesInterface;
 use App\Http\Requests\messageFormRequest;
 use App\Http\Requests\newPasswordFormRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\Messages;
 use Illuminate\Http\Request;
@@ -34,6 +35,7 @@ class ForgetPasswordController extends Controller
         // in case you send by email send title of your message
         if(request()->filled('email')){
             $data['title'] = __('keywords.recovery_password');
+            $data['link'] = env('DESIGN_URL').'/auth/';
         }
         $this->messageObj->send($data);
         return Messages::success(__('messages.operation_done_successfully'));
@@ -47,6 +49,9 @@ class ForgetPasswordController extends Controller
         }else if(key_exists('phone',$data)){
             $user = User::query()->where('phone','=',$data['phone'])->firstOrFailWithCustomError(__('errors.not_found_user_with_this_phone'));
         }
+        else if(key_exists('otp',$data)){
+            $user = User::query()->where('otp_secret','=',$data['otp'])->first();
+        }
         return $user;
     }
 
@@ -58,13 +63,22 @@ class ForgetPasswordController extends Controller
 
     public function new_password(newPasswordFormRequest $request)
     {
-        if(request()->anyFilled('email','phone')) {
+        if(request()->anyFilled('email','phone','otp')) {
             $user = $this->get_user($request->validated());
             $user->password = request('password');
             $user->save();
-            return Messages::success(__('messages.saved_successfully'));
+            return Messages::success(__('messages.saved_successfully'),UserResource::make($user));
         }else{
             return Messages::error('email or phone must be sent in this request');
         }
+    }
+
+    public function otp_check()
+    {
+        $user = $this->get_user(['otp'=>request('otp')]);
+        if($user == null){
+            return Messages::error('incorrect otp');
+        }
+        return Messages::success('',$user);
     }
 }

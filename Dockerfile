@@ -1,9 +1,10 @@
 FROM  php:8.1-apache
 LABEL authors="Mahmoud_elzanklony"
 
-WORKDIR /var/www/microservices
+WORKDIR /var/www/microservices-api
 
 # Install system dependencies
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpng-dev \
@@ -12,35 +13,19 @@ RUN apt-get update && apt-get install -y \
     locales \
     zip \
     jpegoptim optipng pngquant gifsicle \
-    vim \
-    unzip \
-    git \
-    curl
-
-# Install PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
-
-# Enable Apache mod_rewrite for Laravel routing
-RUN a2enmod rewrite
-
+    vim unzip git curl \
+    && docker-php-ext-install pdo_mysql
 # Install Composer
-COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-COPY . /var/www/microservices
+# Copy existing application directory contents to the working directory
+COPY . /var/www/microservices-api
 
-# Ensure the storage and bootstrap/cache directories are writable
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Set file permissions
+RUN chown -R www-data:www-data /var/www/microservices-api
 
-# Install Composer dependencies
-RUN composer install --optimize-autoloader --no-dev
-
-# Copy the Apache vhost configuration for Laravel
-COPY ./docker/vhost.conf /etc/apache2/sites-available/000-default.conf
-
-# Expose port 80 for the web server
+# Expose port 80 to the Docker network
 EXPOSE 80
 
 # Start Apache server
 CMD ["apache2-foreground"]
-
-ENTRYPOINT ["top", "-b"]

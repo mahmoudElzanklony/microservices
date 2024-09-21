@@ -27,6 +27,6 @@ class LoginController extends Controller
     public function logout()
     {
         auth()->logout();
-        return Messages::success(__('messages.logout_successfully'));
+        return true;
     }
 }

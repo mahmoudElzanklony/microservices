@@ -24,7 +24,7 @@ class messageFormRequest extends FormRequest
         return [
             'phone'=>'filled',
             'email'=>'filled',
-            'sending_type'=>'required',
+            //'sending_type'=>'required',
         ];
     }
 }
