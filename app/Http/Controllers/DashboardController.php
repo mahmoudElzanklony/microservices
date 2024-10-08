@@ -34,6 +34,7 @@ class DashboardController extends Controller
     public function users()
     {
         $data = User::query()->orderBy('id','DESC');
+
         $output  = app(Pipeline::class)
             ->send($data)
             ->through([

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\attributes\UserIdPublicVisiblityFilter;
 use App\Filters\EndDateFilter;
 use App\Filters\NameFilter;
 use App\Filters\sections\NoOwnerShipFilter;
@@ -30,7 +31,7 @@ class AttributesControllerResource extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->except('show');
+        $this->middleware('auth:sanctum')->except('show','index');
     }
     public function index()
     {

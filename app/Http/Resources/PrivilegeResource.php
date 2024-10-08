@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ClientServiceAnswersDataResource extends JsonResource
+class PrivilegeResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +16,7 @@ class ClientServiceAnswersDataResource extends JsonResource
     {
         return [
           'id'=>$this->id,
-          'attribute_id'=>$this->attribute_id,
-          'attribute'=>AttributeResource::make($this->whenLoaded('attribute')),
-          'answer'=>$this->answer,
-          'answer_type'=>$this->answer_type,
-          'created_at'=>$this->created_at->format('Y-m-d H:i:s'),
-
+          'name'=>$this->name,
         ];
     }
 }

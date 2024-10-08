@@ -27,8 +27,6 @@ class serviceSecAttrFormRequest extends FormRequest
             'service_id'=>'required|exists:services,id',
             'item_id'=>'filled|array',
             'item_id.*'=>'filled|exists:services_sections_datas,id',
-            'section_id'=>'required|array',
-            'section_id.*'=>'required|exists:sections,id',
             'attribute_id'=>'required|array',
             'attribute_id.*'=>'required|exists:attributes,id',
             'type'=>'required|array',

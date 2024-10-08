@@ -9,6 +9,10 @@ class NoOwnerShipFilter
             return $next($request)
                 ->where('user_id','=',auth()->guard('sanctum')->id());
         }
-        return $next($request)->whereRaw('user_id = '.(auth()->guard('sanctum')->id() ?? 0).' OR visibility = "public"');
+        if(auth()->guard('sanctum')->check()){
+            return $next($request)->whereRaw('user_id = '.(auth()->guard('sanctum')->id() ?? 0).' OR visibility = "public"');
+        }else{
+            return $next($request);
+        }
     }
 }

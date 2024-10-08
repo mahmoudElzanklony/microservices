@@ -9,7 +9,7 @@ class clients_services_sections_data extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['section_id','attribute_id','service_section_data_id','answer','answer_type'];
+    protected $fillable = ['attribute_id','service_section_data_id','answer','answer_type'];
 
     public function attribute()
     {

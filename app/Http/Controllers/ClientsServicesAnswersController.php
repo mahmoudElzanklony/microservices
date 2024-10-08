@@ -16,6 +16,8 @@ use App\Http\Requests\clientSectionAnswersFormRequest;
 use App\Http\Resources\ClientServicePrivateDataResource;
 use App\Models\clients_services_sections_private_data;
 use App\Models\services;
+use App\Models\services_privileges;
+use App\Models\services_privileges_controls;
 use App\Services\Messages;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
@@ -32,6 +34,10 @@ class ClientsServicesAnswersController extends Controller
         $data = clients_services_sections_private_data::query()
                 ->with('service')
                 ->with('answers.attribute')
+                ->when(auth()->user()->roleName() == 'member',function ($q){
+                    $q->with('service.privileges')
+                        ->whereHas('service.privileges',fn($q) => $q->where('user_id',auth()->id()));
+                })
                 ->when(request()->filled('service_id'),function ($e){
                     $e->where('service_id',request()->input('service_id'));
                 })->orderBy('id','DESC');
@@ -62,5 +68,14 @@ class ClientsServicesAnswersController extends Controller
         }catch (\Exception $exception){
             return Messages::error($exception->getMessage());
         }
+    }
+
+    public function privileges()
+    {
+        $result = services_privileges::query()
+            ->when(auth()->user()->roleName() == 'member',fn($e) => $e->where('user_id','=',auth()->id()))
+            ->with('privileges')
+        ->get();
+        return $result;
     }
 }

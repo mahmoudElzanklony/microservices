@@ -22,7 +22,8 @@ class UserResource extends JsonResource
             'phone'=>$this->phone,
             'otp'=>$this->otp_secret,
             'image'=>ImageResource::make($this->whenLoaded('image')),
-            'role'=>$this->roles->pluck('name')[0],
+            'services_privileges'=>ServicePrivilegeResource::collection($this->whenLoaded('services_privileges')),
+            'role'=>$this->roles->pluck('name')[0] ?? 'member',
             'created_at'=>$this->created_at->format('Y-m-d H:i:s')
         ];
         if(isset($this->token)){

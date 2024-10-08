@@ -30,8 +30,6 @@ class clientSectionAnswersFormRequest extends FormRequest
             'info'=>'filled',
             'ids'=>'filled|array',
             'ids.*'=>'filled',
-            'section_id'=>'required|array',
-            'section_id.*'=>'required|exists:sections,id',
             'attribute_id'=>'required|array',
             'attribute_id.*'=>'required|exists:attributes,id',
             'answer'=>'required|array',

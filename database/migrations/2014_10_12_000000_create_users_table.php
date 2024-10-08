@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('otp_secret');
             $table->integer('wallet')->default(0);
+            $table->bigInteger('added_by')->unsigned()->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

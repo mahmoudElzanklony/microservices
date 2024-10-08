@@ -28,4 +28,13 @@ class services extends Model
         return $this->morphOne(styles::class,'styleable');
     }
 
+    public function privileges()
+    {
+        return $this->hasMany(services_privileges::class,'service_id');
+    }
+
+
+
+
+
 }

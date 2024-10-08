@@ -9,7 +9,7 @@ class services_sections_data extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['service_id','section_id','attribute_id','type'];
+    protected $fillable = ['service_id','attribute_id','type'];
 
     public function section()
     {

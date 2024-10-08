@@ -29,29 +29,30 @@ class ClientServiceAnswerBuilder
 
     public function create_data()
     {
-        foreach ($this->data['section_id'] as $key => $value) {
+        foreach ($this->data['attribute_id'] as $key => $value) {
             // Check if the answer is a file
             $file_num = 0;
             if(array_key_exists($key,$this->data['answer'])){
                 $answer = $this->data['answer'][$key];
-            }else{
+            }/*else{
                 $answer = $this->data['files'][$file_num] ?? '';
-            }
-
+            }*/
+            /*if($answer instanceof \Illuminate\Http\UploadedFile){
+                var_dump($this->data['attribute_id']);
+                var_dump($this->data['answer']);
+            }*/
             $type = 'text';
-
             if ($answer instanceof \Illuminate\Http\UploadedFile) {
                 // Handle the file upload
-                try{
+                try {
                     $answer = $this->uploadGeneralFile($answer);
-                }catch (\Exception $e){
+                } catch (\Exception $e) {
                     $answer = null;
                 }
                 $file_num++;
                 $type = 'file';
             }
             clients_services_sections_data::query()->create([
-                'section_id'=>$value,
                 'attribute_id'=>$this->data['attribute_id'][$key],
                 'service_section_data_id'=>$this->privateDataObj->id,
                 'answer'=>$answer,

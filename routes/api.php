@@ -9,11 +9,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ActivationAccountController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\CategoriesControllerResource;
-use App\Http\Controllers\ServicesControllerResource;
-use App\Http\Controllers\PropertiesControllerResource;
-use App\Http\Controllers\PropertiesHeadingControllerResource;
-use App\Http\Controllers\CouponsControllerResource;
-use App\Http\Controllers\OrdersController;
+
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\RatesController;
 use App\Http\Controllers\ProfileController;
@@ -24,6 +20,8 @@ use App\Http\Controllers\SectionsAttributesControllerResource;
 use App\Http\Controllers\ServiceControllerResource;
 use App\Http\Controllers\ServiceSectionsAttributesControllerResource;
 use App\Http\Controllers\ClientsServicesAnswersController;
+use App\Http\Controllers\MemebersControllerResource;
+use App\Http\Controllers\PrivilegesControllerResource;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -64,6 +62,7 @@ Route::group(['middleware'=>'changeLang'],function (){
 
     // clients answers
     Route::group(['prefix'=>'/services-clients'],function (){
+        Route::get('/privileges',[ClientsServicesAnswersController::class,'privileges']);
         Route::get('/',[ClientsServicesAnswersController::class,'index']);
         Route::post('/save-answers',[ClientsServicesAnswersController::class,'save_answers']);
     });
@@ -90,6 +89,8 @@ Route::group(['middleware'=>'changeLang'],function (){
         'sections-attributes'=>SectionsAttributesControllerResource::class,
         'services'=>ServiceControllerResource::class,
         'services-sec-attrs'=>ServiceSectionsAttributesControllerResource::class,
+        'members'=>MemebersControllerResource::class,
+        'privileges'=>PrivilegesControllerResource::class
     ]);
 
     Route::post('/deleteitem',[GeneralServiceController::class,'delete_item']);

@@ -40,14 +40,31 @@ class ServiceSectionsAttributesControllerResource extends Controller
             'main_title'=>$data['main_title'],
             'sub_title'=>$data['sub_title'],
         ]);
-        $data['section_id'] = collect($data['section_id'])->unique()->values()->all();
+
         $data['attribute_id'] = collect($data['attribute_id'])->unique()->values()->all();
-        foreach($data['section_id'] as $key => $sec_id){
+
+        // Fetch the existing attribute IDs for the given service_id
+        $existingAttributes = services_sections_data::query()
+            ->where('service_id', '=', $data['service_id'])
+            ->pluck('attribute_id')
+            ->toArray();
+
+
+// Get the difference between the provided attribute IDs and the existing attribute IDs
+        $attributesToRemove = collect($existingAttributes)->diff($data['attribute_id']);
+
+// Remove the records that match the attribute IDs to remove
+        if ($attributesToRemove->isNotEmpty()) {
+            services_sections_data::query()->where('service_id', $data['service_id'])
+                ->whereIn('attribute_id', $attributesToRemove)
+                ->delete();
+        }
+
+        foreach($data['attribute_id'] as $key => $val){
             services_sections_data::query()->updateOrCreate([
                 'id'=>$data['item_id'][$key] ?? null
             ],[
-                'section_id'=>$sec_id,
-                'attribute_id'=>$data['attribute_id'][$key],
+                'attribute_id'=>$val,
                 'service_id'=>$data['service_id'],
                 'type'=>$data['type'][$key],
             ]);

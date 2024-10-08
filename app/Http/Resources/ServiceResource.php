@@ -22,9 +22,12 @@ class ServiceResource extends JsonResource
             'name'=>$this->name,
             'user'=>UserResource::make($this->whenLoaded('user')),
             'sec_attr_data'=>SectionAttributeResource::collection($this->whenLoaded('sec_attr_data')),
+            'privileges'=>PrivilegeResource::collection($this->whenLoaded('privileges')),
             'style'=>StyleResource::make($this->whenLoaded('style')),
+            'type'=>$this->type,
             'created_at'=>$this->created_at->format('Y-m-d H:i:s'),
         ];
+
         if(request()->hasHeader('AllLangs')){
             $output  = $this->get_data_with_all_lang();
             return array_merge($init,$output['main_title'],$output['sub_title']);

@@ -45,7 +45,8 @@ class ForgetPasswordController extends Controller
     public function get_user($data)
     {
         if(key_exists('email',$data)){
-            $user = User::query()->where('email','=',$data['email'])->firstOrFailWithCustomError(__('errors.not_found_user_with_this_email'));
+            $user = User::query()->where('email','=',$data['email'])
+                ->firstOrFailWithCustomError(__('errors.not_found_user_with_this_email'));
         }else if(key_exists('phone',$data)){
             $user = User::query()->where('phone','=',$data['phone'])->firstOrFailWithCustomError(__('errors.not_found_user_with_this_phone'));
         }

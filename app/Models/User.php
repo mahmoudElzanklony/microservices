@@ -36,6 +36,7 @@ class User extends Authenticatable
         $this->attributes['otp_secret'] = time();
     }
 
+
     protected $fillable = [
         'username',
         'email',
@@ -43,6 +44,7 @@ class User extends Authenticatable
         'phone',
         'otp_secret',
         'wallet',
+        'added_by'
     ];
 
     public function roleName()
@@ -78,6 +80,11 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function services_privileges()
+    {
+        return $this->hasMany(services_privileges::class,'user_id');
+    }
 
     /**
      * The attributes that should be cast.
