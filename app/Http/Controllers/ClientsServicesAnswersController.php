@@ -18,8 +18,11 @@ use App\Models\clients_services_sections_private_data;
 use App\Models\services;
 use App\Models\services_privileges;
 use App\Models\services_privileges_controls;
+use App\Patterns\factory\answers\AuthorizeUserServiceFactory;
 use App\Services\Messages;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Resources\Json\ResourceResponse;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\DB;
 
@@ -29,7 +32,7 @@ class ClientsServicesAnswersController extends Controller
     {
         $this->middleware('auth:sanctum')->except('save_answers');
     }
-    public function index()
+    public function index():ResourceCollection
     {
         $data = clients_services_sections_private_data::query()
                 ->with('service')
@@ -52,6 +55,12 @@ class ClientsServicesAnswersController extends Controller
             ->thenReturn()
             ->paginate(request('limit') ?? 10);
         return ClientServicePrivateDataResource::collection($output);
+    }
+
+    public function authorize_user(services $service_id)
+    {
+        $status = AuthorizeUserServiceFactory::authorize($service_id);
+        return response()->json(['status'=>$status]);
     }
     //
     public function save_answers(clientSectionAnswersFormRequest $request)

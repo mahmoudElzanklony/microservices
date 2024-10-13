@@ -20,8 +20,8 @@ class ClientServiceAnswerBuilder
             ],[
                 'service_id'=>$this->data["service_id"],
                 'ip'=>$this->data["ip"],
-                'latitude'=>$this->data["latitude"],
-                'longitude'=>$this->data["longitude"],
+                'latitude'=>$this->data["latitude"] ?? null,
+                'longitude'=>$this->data["longitude"] ?? null,
                 'info'=>$this->data["info"] ?? null,
             ]);
         return $this;

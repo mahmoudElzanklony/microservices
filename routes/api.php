@@ -64,6 +64,7 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::group(['prefix'=>'/services-clients'],function (){
         Route::get('/privileges',[ClientsServicesAnswersController::class,'privileges']);
         Route::get('/',[ClientsServicesAnswersController::class,'index']);
+        Route::post('/authorize',[ClientsServicesAnswersController::class,'authorize_user']);
         Route::post('/save-answers',[ClientsServicesAnswersController::class,'save_answers']);
     });
 
