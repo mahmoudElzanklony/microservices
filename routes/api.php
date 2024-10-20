@@ -22,6 +22,7 @@ use App\Http\Controllers\ServiceSectionsAttributesControllerResource;
 use App\Http\Controllers\ClientsServicesAnswersController;
 use App\Http\Controllers\MemebersControllerResource;
 use App\Http\Controllers\PrivilegesControllerResource;
+use App\Http\Controllers\MemberPrivilegesController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -64,6 +65,7 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::group(['prefix'=>'/services-clients'],function (){
         Route::get('/privileges',[ClientsServicesAnswersController::class,'privileges']);
         Route::get('/',[ClientsServicesAnswersController::class,'index']);
+        Route::get('/columns',[ClientsServicesAnswersController::class,'columns']);
         Route::post('/authorize',[ClientsServicesAnswersController::class,'authorize_user']);
         Route::post('/save-answers',[ClientsServicesAnswersController::class,'save_answers']);
     });
@@ -72,6 +74,12 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::group(['prefix'=>'/profile','middleware'=>'auth:sanctum'],function (){
         Route::post('/update-info',[ProfileController::class,'update_info']);
     });
+
+    // member privileges
+    Route::group(['prefix'=>'/member-privileges','middleware'=>'auth:sanctum'],function (){
+        Route::get('/',[MemberPrivilegesController::class,'index']);
+    });
+
     // admin panel
     Route::group(['prefix'=>'/dashboard','middleware'=>'auth:sanctum'],function (){
         Route::get('/users',[DashboardController::class,'users']);

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class services_privileges extends Model
 {
@@ -31,5 +33,12 @@ class services_privileges extends Model
             'id',                       // Local key on the starting model
             'privilege_id'              // Local key on the intermediate model
         );
+    }
+
+    public function scopeActivePrivileges(Builder $query , $service_id)
+    {
+        $query
+            ->where('user_id','=',auth()->id())
+            ->where('service_id','=',$service_id);
     }
 }

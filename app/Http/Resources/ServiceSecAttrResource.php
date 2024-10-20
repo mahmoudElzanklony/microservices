@@ -17,8 +17,9 @@ class ServiceSecAttrResource extends JsonResource
         return [
           'id'=>$this->id,
           'service_id'=>$this->service_id,
-          'section_id'=>$this->section_id,
+          'section_id'=>$this->section_id ?? null,
           'attribute_id'=>$this->attribute_id,
+          'type'=>$this->type ?? null,
           'service'=>ServiceResource::make($this->whenLoaded('service')),
           'section'=>SectionResource::make($this->whenLoaded('section')),
           'attribute'=>AttributeResource::make($this->whenLoaded('attribute')),

@@ -19,6 +19,7 @@ class ServicePrivilegeResource extends JsonResource
           'service_id'=>$this->service_id,
           'service'=>ServiceResource::make($this->whenLoaded('service')),
           'controls'=>ControllerPrivilegeResource::collection($this->whenLoaded('controls')),
+          'privileges'=>PrivilegeResource::collection($this->whenLoaded('privileges')),
         ];
     }
 }

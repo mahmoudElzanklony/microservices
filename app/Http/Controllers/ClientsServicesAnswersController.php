@@ -14,10 +14,12 @@ use App\Filters\VisibilityFilter;
 use App\Http\patterns\builder\ClientServiceAnswerBuilder;
 use App\Http\Requests\clientSectionAnswersFormRequest;
 use App\Http\Resources\ClientServicePrivateDataResource;
+use App\Http\Resources\ServiceSecAttrResource;
 use App\Models\clients_services_sections_private_data;
 use App\Models\services;
 use App\Models\services_privileges;
 use App\Models\services_privileges_controls;
+use App\Models\services_sections_data;
 use App\Patterns\factory\answers\AuthorizeUserServiceFactory;
 use App\Services\Messages;
 use Illuminate\Http\Request;
@@ -43,7 +45,8 @@ class ClientsServicesAnswersController extends Controller
                 })
                 ->when(request()->filled('service_id'),function ($e){
                     $e->where('service_id',request()->input('service_id'));
-                })->orderBy('id','DESC');
+                })
+            ->orderBy('id','DESC');
 
         $output  = app(Pipeline::class)
             ->send($data)
@@ -57,10 +60,17 @@ class ClientsServicesAnswersController extends Controller
         return ClientServicePrivateDataResource::collection($output);
     }
 
-    public function authorize_user(services $service_id)
+    public function authorize_user()
     {
-        $status = AuthorizeUserServiceFactory::authorize($service_id);
+        $status = AuthorizeUserServiceFactory::authorize(request('service_id')  , request('type') ?? '');
         return response()->json(['status'=>$status]);
+    }
+
+    public function columns(services $service_id)
+    {
+        $columns = services_sections_data::query()->with('attribute')
+            ->where('service_id',request('service_id'))->get();
+        return ServiceSecAttrResource::collection($columns);
     }
     //
     public function save_answers(clientSectionAnswersFormRequest $request)

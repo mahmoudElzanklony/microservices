@@ -8,14 +8,14 @@ use App\Patterns\strategy\answers\AuthorizeOwner;
 
 class AuthorizeUserServiceFactory
 {
-    public static function authorize(services $service_id):bool
+    public static function authorize($service_id , $type = ''):bool
     {
         if(auth()->user()->roleName() == 'owner'){
             $obj = new AuthorizeOwner();
             $status = $obj->check($service_id);
         }else if(auth()->user()->roleName()  == 'member'){
             $obj = new AuthorizeMember();
-            $status = $obj->check($service_id);
+            $status = $obj->check($service_id,$type);
         }else{
             $status = true;
         }
