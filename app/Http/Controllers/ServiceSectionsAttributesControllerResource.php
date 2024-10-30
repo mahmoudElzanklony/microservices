@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CheckEmailExistAtService;
+use App\Http\Enum\ServiceTypeEnum;
 use App\Http\Requests\serviceSecAttrFormRequest;
 use App\Http\Resources\AttributeResource;
 use App\Http\Resources\ServiceResource;
@@ -36,10 +38,6 @@ class ServiceSectionsAttributesControllerResource extends Controller
     {
         $service = services::query()->find($data['service_id']);
         $data =  FormRequestHandleInputs::handle_inputs_langs($data,['main_title','sub_title']);
-        $service->update([
-            'main_title'=>$data['main_title'],
-            'sub_title'=>$data['sub_title'],
-        ]);
 
         $data['attribute_id'] = collect($data['attribute_id'])->unique()->values()->all();
 
@@ -66,13 +64,31 @@ class ServiceSectionsAttributesControllerResource extends Controller
             ],[
                 'attribute_id'=>$val,
                 'service_id'=>$data['service_id'],
-                'type'=>$data['type'][$key],
+                'type'=>$data['types'][$key],
             ]);
         }
         $this->save_style($service,$data);
         $service->load('style');
         $service->load('sec_attr_data');
         return Messages::success(__(trans('messages.saved_successfully')),ServiceResource::make($service));
+
+    }
+
+
+    public function save_service($data,$other_data = [])
+    {
+        $data =  FormRequestHandleInputs::handle_inputs_langs($data,['main_title','sub_title']);
+
+        services::query()->updateOrCreate([
+            'id'=>$data['id'] ?? null
+        ],$data);
+
+        if($data['type'] == ServiceTypeEnum::in_mail->value){
+            // validate if email in attribute or not
+            CheckEmailExistAtService::check($other_data);
+
+        }
+
 
     }
 
@@ -87,7 +103,10 @@ class ServiceSectionsAttributesControllerResource extends Controller
     public function store(serviceSecAttrFormRequest $request)
     {
         //
+
         $data = $request->validated();
+        $this->save_service(request()->only('id','name','type','service_id'
+            ,'ar_main_title','en_main_title','ar_sub_title','en_sub_title'),$data);
         return $this->save($data);
     }
 
@@ -109,6 +128,8 @@ class ServiceSectionsAttributesControllerResource extends Controller
         //
         $data = $request->validated();
         $data['id'] = $id;
+        $this->save_service(request()->only('id','name','type','service_id'
+            ,'ar_main_title','en_main_title','ar_sub_title','en_sub_title'),$data);
         return $this->save($data);
     }
 

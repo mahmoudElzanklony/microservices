@@ -23,6 +23,7 @@ use App\Http\Controllers\ClientsServicesAnswersController;
 use App\Http\Controllers\MemebersControllerResource;
 use App\Http\Controllers\PrivilegesControllerResource;
 use App\Http\Controllers\MemberPrivilegesController;
+use App\Http\Controllers\TicketChatControllerResource;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -75,9 +76,14 @@ Route::group(['middleware'=>'changeLang'],function (){
         Route::post('/update-info',[ProfileController::class,'update_info']);
     });
 
+    // chat
+    Route::group(['prefix'=>'/profile','middleware'=>'auth:sanctum'],function (){
+        Route::post('/update-info',[ProfileController::class,'update_info']);
+    });
+
     // member privileges
-    Route::group(['prefix'=>'/member-privileges','middleware'=>'auth:sanctum'],function (){
-        Route::get('/',[MemberPrivilegesController::class,'index']);
+    Route::group(['prefix'=>'/tickets','middleware'=>'auth:sanctum'],function (){
+        Route::post('/end',[TicketChatControllerResource::class,'end_chat']);
     });
 
     // admin panel
@@ -99,7 +105,8 @@ Route::group(['middleware'=>'changeLang'],function (){
         'services'=>ServiceControllerResource::class,
         'services-sec-attrs'=>ServiceSectionsAttributesControllerResource::class,
         'members'=>MemebersControllerResource::class,
-        'privileges'=>PrivilegesControllerResource::class
+        'privileges'=>PrivilegesControllerResource::class,
+        'tickets'=>TicketChatControllerResource::class,
     ]);
 
     Route::post('/deleteitem',[GeneralServiceController::class,'delete_item']);

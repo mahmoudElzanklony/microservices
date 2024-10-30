@@ -33,6 +33,11 @@ class services extends Model
         return $this->hasMany(services_privileges::class,'service_id');
     }
 
+    public function private_answers()
+    {
+        return $this->hasMany(clients_services_sections_private_data::class,'service_id');
+    }
+
 
 
 

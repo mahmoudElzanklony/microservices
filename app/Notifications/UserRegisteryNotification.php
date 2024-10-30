@@ -45,8 +45,8 @@ class UserRegisteryNotification extends Notification
     {
         if($this->is_client){
             return [
-                'data' => json_encode(['ar' => 'تمت عملية التسجيل بنجاح في '.env('APP_NAME').'تمت عملية التسجيل الخاصه بك بنجاح و رقم التفعيل هو '.$this->user->otp_secret,
-                    'en' =>  'Register process done successfully at '.env('APP_NAME').' and your otp number is '.$this->user->otp_secret], JSON_UNESCAPED_UNICODE),
+                'data' => json_encode(['ar' => 'تمت عملية التسجيل بنجاح في '.env('APP_NAME'),
+                    'en' =>  'Register process done successfully at '.env('APP_NAME')], JSON_UNESCAPED_UNICODE),
                 'sender' => $this->user->id
             ];
         }else {
@@ -59,11 +59,11 @@ class UserRegisteryNotification extends Notification
 
     public function toMail(object $notifiable)
     {
-        SendEmail::send('تمت عملية التسجيل الخاصه بك في ' . env('APP_NAME').' بنجاح ', ' تمت بنجاح ورقم التفعيل الخاص بك هو ' . $this->user->otp_secret, '', '', $this->user->email);
+        SendEmail::send('تمت عملية التسجيل الخاصه بك في ' . env('APP_NAME').' بنجاح ', 'تم انشاء عضويه لك بنجاح في منصه ' . env('APP_NAME').' في حالة نسيان كلمة المرور و انشاء واحده جديدة يمكنك الضغط هنا علي هذا الرابط ', env('DESIGN_URL').'/auth/new-password?otp='.$this->user->otp_secret, 'press here', $this->user->email);
         return (new MailMessage)
             ->subject('Register process done successfully at ' . env('APP_NAME'))
             ->view( 'emails.email', ['details' => ['title'=>'Register process done successfully at ' . env('APP_NAME'),
-                'body'=>' Register process done successfully and your otp number is '.$this->user->otp_secret,'link'=>'','link_msg'=>'']]);
+                'body'=>' Register process done successfully if you want to change your password and make new one you can press on below link ','link'=>env('DESIGN_URL').'/auth/new-password?otp='.$this->user->otp_secret,'link_msg'=>'press here']]);
 
 
     }

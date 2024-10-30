@@ -9,5 +9,8 @@ return [
     'operation_done_successfully'=>'Operation done successfully',
   'logout_successfully'=>'تم تسجيل الخروج بنجاح',
   'submit_new_request'=>'New data has been saved successfully at service called ',
+    'submit_new_request_ticket_chat'=>'There is a new reply from service ',
+    'ticket_ended_successfully'=>'Ticket ended successfully',
+
 
 ];

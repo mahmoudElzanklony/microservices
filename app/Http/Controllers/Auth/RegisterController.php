@@ -22,7 +22,7 @@ class RegisterController extends Controller
         $data = $request->validated();
        // $data['role_id'] = roles::query()->where('name','=','client')->first()->id;
         $user = User::query()->create($data);
-        $user->assignRole('client');
+        $user->assignRole('owner');
 
         $user->createToken($data['email'])->plainTextToken;
         DB::commit();

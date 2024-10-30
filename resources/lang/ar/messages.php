@@ -9,4 +9,6 @@ return [
   'operation_done_successfully'=>'تمت العملية بنجاح',
   'logout_successfully'=>'تم تسجيل الخروج بنجاح',
   'submit_new_request'=>'تم حفظ بيانات جديده في خدمة ',
+  'submit_new_request_ticket_chat'=>'هناك رد جديد من خدمه ',
+  'ticket_ended_successfully'=>'لقد تم انهاء المحادثة بنجاح',
 ];

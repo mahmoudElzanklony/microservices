@@ -16,5 +16,8 @@ return [
     'order_status_not_accept_to_be_cancelled'=>'The status of the order does not allow you to cancel it, as the order is canceled only if it is pending or under review',
     'account_not_verified'=>'Account not verified please verify it firstly',
     'not_found'=>'There is no data',
+    'ticket_ended_before'=>'Ticket ended before',
+    'email_must_exists'=>'Email must be exists at this service that type is in mail',
+    'email_exists_choose_another'=>'This email exists in system please choose another',
 
 ];

@@ -24,7 +24,7 @@ class EloquentBuilderServiceProvider extends ServiceProvider
         //
         Builder::macro('firstOrFailWithCustomError',function ($error){
             if($this->first() == null){
-                return Messages::error($error);
+                abort($error);
             }
             return $this->first();
         });

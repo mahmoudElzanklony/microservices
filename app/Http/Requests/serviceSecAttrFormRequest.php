@@ -29,8 +29,9 @@ class serviceSecAttrFormRequest extends FormRequest
             'item_id.*'=>'filled|exists:services_sections_datas,id',
             'attribute_id'=>'required|array',
             'attribute_id.*'=>'required|exists:attributes,id',
-            'type'=>'required|array',
-            'type.*'=>'required',
+            'types'=>'required|array',
+            'types.*'=>'required',
+            'type'=>'required',
             'style'=>'filled',
         ];
         $arr = FormRequestHandleInputs::handle($arr,['main_title','sub_title']);

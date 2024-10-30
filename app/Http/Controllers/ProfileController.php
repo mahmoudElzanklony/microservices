@@ -17,6 +17,9 @@ class ProfileController extends Controller
         if(auth()->user()->phone != $data['phone']){
            $data['phone_verified_at'] = null;
         }
+        if($data['password'] == ''){
+            unset($data['password']);
+        }
         auth()->user()->update($data);
         return Messages::success(__('messages.updated_successfully'),UserResource::make(auth()->user()));
     }

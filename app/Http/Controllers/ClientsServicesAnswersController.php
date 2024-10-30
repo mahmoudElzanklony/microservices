@@ -43,6 +43,12 @@ class ClientsServicesAnswersController extends Controller
                     $q->with('service.privileges')
                         ->whereHas('service.privileges',fn($q) => $q->where('user_id',auth()->id()));
                 })
+                ->when(auth()->user()->roleName() == 'owner',function ($q){
+                    $q->whereHas('service',fn($q) => $q->where('user_id','=',auth()->id()));
+                })
+                ->when(auth()->user()->roleName() == 'client',function ($q){
+                    $q->whereHas('client_service_owner',fn($q) => $q->where('user_id','=',auth()->id()));
+                })
                 ->when(request()->filled('service_id'),function ($e){
                     $e->where('service_id',request()->input('service_id'));
                 })

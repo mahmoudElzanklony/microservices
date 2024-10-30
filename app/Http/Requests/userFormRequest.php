@@ -26,7 +26,7 @@ class userFormRequest extends FormRequest
                 'email' => 'filled|unique:users,email,' . auth()->id(),
                 'username' => 'filled',
                 'phone' => 'filled|unique:users,phone,'. auth()->id(),
-                'password' => 'filled',
+                'password' => 'nullable',
             ];
         }else{
             return [
