@@ -85,6 +85,9 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::group(['prefix'=>'/tickets','middleware'=>'auth:sanctum'],function (){
         Route::post('/end',[TicketChatControllerResource::class,'end_chat']);
     });
+    Route::group(['prefix'=>'/services','middleware'=>'auth:sanctum'],function (){
+        Route::post('/assign-members',[MemberPrivilegesController::class,'assign_members']);
+    });
 
     // admin panel
     Route::group(['prefix'=>'/dashboard','middleware'=>'auth:sanctum'],function (){

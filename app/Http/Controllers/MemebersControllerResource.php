@@ -32,6 +32,7 @@ class MemebersControllerResource extends Controller
 
         $data = User::query()
             ->with('services_privileges',fn($e)=>$e->with(['controls.privilege','service']))
+            ->when(auth()->user()->roleName() != 'admin',fn($q) => $q->where('added_by',auth()->id()))
             ->orderBy('id','DESC')
             ->where('added_by','=',auth()->id());
         $output  = app(Pipeline::class)
