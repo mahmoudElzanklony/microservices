@@ -44,7 +44,7 @@
                 </tr>
                 <tr>
                     <td style="text-align:center;">
-                        <img width="240" src="http://printer.first-meeting.net/images/logo.png" title="logo"
+                        <img width="240" src="https://microservices.algorithimia.com/images/logo.png" title="logo"
                              alt="logo">
                     </td>
                 </tr>
@@ -81,7 +81,7 @@
                 <tr>
                     <td style="text-align:center;">
                         <p style="font-size:14px; color:rgba(69, 80, 86, 0.7411764705882353); line-height:18px; margin:0 0 0;">
-                            &copy; <strong>printerServices.com</strong></p>
+                            &copy; <strong>microservices.com</strong></p>
                     </td>
                 </tr>
                 <tr>
