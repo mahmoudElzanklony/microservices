@@ -57,9 +57,9 @@ class UserSubmitForm extends Notification
         $service = $this->data->service;
         SendEmail::send('بيانات جديدة تم حفظها في خدمة خاصه ب '.env('APP_NAME'),'تم حفظ بيانات جديده في خدمة  '.$service->name,env('APP_URL').'/notifications','press here',$service->user->email);
         return (new MailMessage)
-            ->subject('Service cancelled successfully at '.env('APP_NAME'))
-            ->view( 'emails.email', ['details' => ['title'=>'Service cancelled successfully at '.env('APP_NAME'),
-                'body'=>'You cancel service successfully and its id is '.$this->order->id.' from order that id is'.$this->order->order->id,'link'=>env('APP_URL').'/notifications','link_msg'=>'press here']]);
+            ->subject('new client answer saved successfully at '.env('APP_NAME'))
+            ->view( 'emails.email', ['details' => ['title'=>'Service answer saved successfully at '.env('APP_NAME'),
+                'body'=>'You have new answer of service '.$service->name,'link'=>env('APP_URL').'/notifications','link_msg'=>'press here']]);
 
 
     }

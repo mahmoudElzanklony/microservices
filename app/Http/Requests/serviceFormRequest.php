@@ -27,7 +27,7 @@ class serviceFormRequest extends FormRequest
             'name'=>'required',
             'type'=>'required|in:contact,in_mail',
         ];
-        $arr = FormRequestHandleInputs::handle($arr,['main_title','sub_title']);
+        $arr = FormRequestHandleInputs::handle($arr,['main_title','sub_title:nullable']);
         return $arr;
     }
 }
