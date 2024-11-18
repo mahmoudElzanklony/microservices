@@ -36,7 +36,7 @@ class ServiceControllerResource extends Controller
         $data = services::query()
             ->when(auth()->user()->roleName() == 'owner',fn($e) => $e->where('user_id',auth()->id()))
 
-            ->when(auth()->user()->roleName() == 'client',fn($e) => $e->whereHas('private_answers.owner'),fn($q) => $q->where('user_id','=',auth()->id()))
+           // ->when(auth()->user()->roleName() == 'client',fn($e) => $e->whereHas('private_answers.owner'),fn($q) => $q->where('user_id','=',auth()->id()))
             ->when(auth()->user()->roleName() == 'admin',fn($e) => $e->with('user'))
             ->orderBy('id','DESC');
         $output  = app(Pipeline::class)
