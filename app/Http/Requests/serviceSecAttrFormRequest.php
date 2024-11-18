@@ -34,7 +34,7 @@ class serviceSecAttrFormRequest extends FormRequest
             'type'=>'required',
             'style'=>'filled',
         ];
-        $arr = FormRequestHandleInputs::handle($arr,['main_title','sub_title']);
+        $arr = FormRequestHandleInputs::handle($arr,['main_title','sub_title:nullable']);
         return $arr;
 
     }
