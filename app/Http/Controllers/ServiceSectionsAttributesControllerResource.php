@@ -50,7 +50,7 @@ class ServiceSectionsAttributesControllerResource extends Controller
 
 // Get the difference between the provided attribute IDs and the existing attribute IDs
         $attributesToRemove = collect($existingAttributes)->diff($data['attribute_id']);
-        return $data['attribute_id'];
+        return [$attributesToRemove,$existingAttributes];
 
 // Remove the records that match the attribute IDs to remove
         if ($attributesToRemove->isNotEmpty()) {
