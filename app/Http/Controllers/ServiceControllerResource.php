@@ -41,7 +41,7 @@ class ServiceControllerResource extends Controller
                               ->whereHas('controls.privilege',fn($x) => $x->where('name','=','view'))
                 )
             )
-            ->when(auth()->user()->roleName() == 'client',fn($e) => var_dump(auth()->user()))
+            ->when(auth()->user()->roleName() == 'client',fn($e) => $e->whereHas('private_answers.owner',fn($q) => $q->where('user_id','=',auth()->id())))
             ->when(auth()->user()->roleName() == 'admin',fn($e) => $e->with('user'))
             ->orderBy('id','DESC');
         $output  = app(Pipeline::class)
