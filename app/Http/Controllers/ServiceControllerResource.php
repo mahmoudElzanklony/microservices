@@ -32,13 +32,11 @@ class ServiceControllerResource extends Controller
      */
     public function index()
     {
-        return auth()->user()->roleName() == 'member';
+
         $data = services::query()
             ->when(auth()->user()->roleName() == 'owner',fn($e) => $e->where('user_id',auth()->id()))
             ->when(auth()->user()->roleName() == 'member',
-                fn($e) => $e->whereHas('privileges',
-                    fn($q) => $q->where('user_id',auth()->id())
-                              ->whereHas('controls.privilege',fn($x) => $x->where('name','=','view'))
+                fn($e) => var_dump(auth()->user()
                 ))
             ->when(auth()->user()->roleName() == 'client',fn($e) => $e->whereHas('private_answers.owner'),fn($q) => $q->where('user_id','=',auth()->id()))
             ->when(auth()->user()->roleName() == 'admin',fn($e) => $e->with('user'))
