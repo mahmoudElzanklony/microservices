@@ -32,7 +32,7 @@ class ServiceControllerResource extends Controller
      */
     public function index()
     {
-        return auth()->user()->roleName() ;
+
         $data = services::query()
             ->when(auth()->user()->roleName() == 'owner',fn($e) => $e->where('user_id',auth()->id()))
             ->when(auth()->user()->roleName() == 'member',
