@@ -16,7 +16,7 @@ class AuthorizeMember implements AuthorizeViewServiceInterface
             ->where('service_id','=',$service_id)
             ->where('user_id','=',auth()->id())
             ->when($type != '',function ($e) use ($type){
-                $e->whereHas('services_privileges_controls',fn($q) =>
+                $e->whereHas('controls',fn($q) =>
                     $q->whereHas('privilege',fn($x)=>
                         $x->where('name','=',$type)));
             })
